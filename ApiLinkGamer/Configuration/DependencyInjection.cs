@@ -1,4 +1,11 @@
 ﻿
+using Data.ConnectionFactory;
+using Data.Context;
+using Data.Repository;
+using Data.Repository.Interfaces;
+using Service.Service;
+using Service.Service.Interfaces;
+
 namespace ApiLinkGamer.Configuration;
 public class DependencyInjection
 {
@@ -17,7 +24,7 @@ public class DependencyInjection
 
     private static void AddServices(ref IServiceCollection services)
     {
-
+        services.AddTransient<IUserService, UserService>();
     }
 
     #endregion [ Repositório Genérico ]
@@ -26,8 +33,7 @@ public class DependencyInjection
 
     private static void AddRepoitorys(ref IServiceCollection services)
     {
-        //services.AddScoped<ITokenServiceCore, TokenServiceCore>();
-        //services.AddScoped(typeof(IUserCore), typeof(UserCore));
+        services.AddTransient<IUserRepository, UserRepository>();
     }
 
     #endregion [ Repositório Específicos ]
@@ -36,6 +42,8 @@ public class DependencyInjection
 
     private static void AddGenerics(ref IServiceCollection services)
     {
+        services.AddDbContext<ApiLinkGamerContext>();
+        services.AddTransient<IDatabaseFactory, DatabaseFactory>();
         //services.AddScoped<ITokenServiceCore, TokenServiceCore>();
         //services.AddScoped(typeof(IUserCore), typeof(UserCore));
     }

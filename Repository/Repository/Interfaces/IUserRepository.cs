@@ -10,5 +10,6 @@ namespace Data.Repository.Interfaces
     public interface IUserRepository
     {
         Task<User> GetByEmail(string email, bool ativo);
+        Task<bool> InsertUser(User user);
     }
 }

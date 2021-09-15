@@ -3,6 +3,7 @@ using Data.ConnectionFactory;
 using Data.Context;
 using Data.Repository.Interfaces;
 using Domain.Entities;
+using Domain.Models;
 
 namespace Data.Repository
 {
@@ -22,6 +23,24 @@ namespace Data.Repository
             using (var connection = _factory.GetDbConnection)
             {
                  return await connection.QueryFirstAsync<User>("select * from User where Email = @Email and Ativo = @Ativo", new { Email = email, Ativo = ativo });
+            }
+        }
+
+
+        public async Task<bool> InsertUser(User user)
+        {
+            using var transaction = _context.Database.BeginTransaction();
+            try
+            {
+                await _context.AddAsync(user);
+                await _context.SaveChangesAsync();
+                transaction.Commit();
+                return true;
+            }
+            catch (Exception)
+            {
+                await transaction.RollbackAsync();
+                return false;
             }
         }
     }

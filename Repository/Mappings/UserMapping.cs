@@ -25,12 +25,12 @@ namespace Data.Mappings
                 .IsRequired();
 
             builder
-                .Property(x => x.Name)
+                .Property(x => x.Nome)
                 .HasColumnType("varchar(45)")
                 .IsRequired();
 
             builder
-                .Property(x => x.LastName)
+                .Property(x => x.Sobrenome)
                 .HasColumnType("varchar(45)")
                 .IsRequired();
 
