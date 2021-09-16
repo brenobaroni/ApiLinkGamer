@@ -1,4 +1,5 @@
-﻿using MySql.Data.MySqlClient;
+﻿
+using MySqlConnector;
 using System.Data;
 using System.Data.Entity;
 
@@ -11,7 +12,7 @@ namespace Data.ConnectionFactory
 
         private MySqlConnection SetConnection()
         {
-            string? connectionString = Environment.GetEnvironmentVariable("ApiLinkGamerDBConnection");
+            string? connectionString = Environment.GetEnvironmentVariable("ApiLinkGamerConnection");
 
             if (connectionString != null)
             {
@@ -24,7 +25,6 @@ namespace Data.ConnectionFactory
         }
         public void Dispose()
         {
-            GetDbConnection.Close();
             GC.SuppressFinalize(this);
         }
     }

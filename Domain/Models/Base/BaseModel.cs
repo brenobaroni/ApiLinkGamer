@@ -8,11 +8,11 @@ namespace Service.Interfaces.Base
 {
     public class BaseModel
     {
-        public static void isNullOrEmpty(string text, string propName, out bool valid, ref string message)
+        public void isNullOrEmpty(string text, string propName, out bool valid, ref string message)
         {
-            valid = string.IsNullOrEmpty(text);
+            valid = !string.IsNullOrEmpty(text);
 
-            if (valid)
+            if (!valid)
                 message = message + $"É obrigatorio informar {propName}.";
         }
 

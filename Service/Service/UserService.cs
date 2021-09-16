@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using BC = BCrypt.Net.BCrypt;
 
 namespace Service.Service
 {
@@ -23,9 +24,9 @@ namespace Service.Service
         {
             try
             {
-                var modelValidated = userInsertModel.isValid();
-                if (!modelValidated.Valid)
-                    return new ApiLinkGamerResponse(false, modelValidated.Message);
+                //var modelValidated = userInsertModel.isValid();
+                //if (!modelValidated.Valid)
+                //    return new ApiLinkGamerResponse(false, modelValidated.Message);
 
                 string userSerialized = JsonConvert.SerializeObject(userInsertModel);
                 User? user = JsonConvert.DeserializeObject<User>(userSerialized);
@@ -33,9 +34,14 @@ namespace Service.Service
                 if (user == null)
                     return new ApiLinkGamerResponse(false, "Invalid Request.");
 
+                user.Password = BC.HashPassword(user.Password);
+
                 bool success = await _userRepository.InsertUser(user);
 
-                return new ApiLinkGamerResponse(success, "Usuário registrado com succeso.");
+                if(success)
+                    return new ApiLinkGamerResponse(success, "Usuário registrado com succeso.");
+                else
+                    return new ApiLinkGamerResponse(success, "Ops.. Ocorreu um erro ao registrar usuário.");
 
 
             }

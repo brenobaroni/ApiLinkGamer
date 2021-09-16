@@ -4,13 +4,14 @@ using Data.Context;
 using Data.Repository.Interfaces;
 using Domain.Entities;
 using Domain.Models;
+using System.Data.Entity;
 
 namespace Data.Repository
 {
     public class UserRepository : IUserRepository
     {
         IDatabaseFactory _factory;
-        ApiLinkGamerContext _context; 
+        private readonly ApiLinkGamerContext _context; 
 
         public UserRepository(IDatabaseFactory databaseFactory, ApiLinkGamerContext context)
         {
@@ -29,10 +30,16 @@ namespace Data.Repository
 
         public async Task<bool> InsertUser(User user)
         {
+            using (var connection = _factory.GetDbConnection)
+            {
+                var sdasda = await connection.QueryFirstAsync<User>("select * from User");
+            }
+
+
             using var transaction = _context.Database.BeginTransaction();
             try
             {
-                await _context.AddAsync(user);
+                await _context.User.AddAsync(user);
                 await _context.SaveChangesAsync();
                 transaction.Commit();
                 return true;

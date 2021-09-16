@@ -16,12 +16,12 @@ namespace Data.Context
             var optionsBuilder = new DbContextOptionsBuilder<ApiLinkGamerContext>();
             string? connectionString = Environment.GetEnvironmentVariable("ApiLinkGamerDBConnection");
 
-            if (connectionString != null)
-            {
-                optionsBuilder.UseMySQL(connectionString);
-            }
-            else
-                throw new Exception("Erro ao connectar-se a base de dados.");
+            //if (connectionString != null)
+            //{
+            //    optionsBuilder.UseMySQL(connectionString);
+            //}
+            //else
+            //    throw new Exception("Erro ao connectar-se a base de dados.");
 
             return new ApiLinkGamerContext(optionsBuilder.Options);
         }

@@ -10,10 +10,12 @@ using System.Threading.Tasks;
 
 namespace Data.Mappings
 {
-    public class UserMapping : BaseEntityMapping<User>
+    public class UserMapping : EntityTypeConfiguration<User>
     {
-        public void Configure(EntityTypeBuilder<User> builder)
+        public override void Map(EntityTypeBuilder<User> builder)
         {
+            builder.ToTable("User");
+
             builder
                 .Property(x => x.Email)
                 .HasColumnType("varchar(45)")
@@ -21,7 +23,7 @@ namespace Data.Mappings
 
             builder
                 .Property(x => x.Password)
-                .HasColumnType("varchar(45)")
+                .HasColumnType("varchar(100)")
                 .IsRequired();
 
             builder
@@ -37,12 +39,11 @@ namespace Data.Mappings
             builder
                 .Property(x => x.Role)
                 .HasColumnType("int")
-                .IsRequired(false);
+                .IsRequired();
 
             builder
                 .Property(x => x.Ativo)
-                .HasColumnType("bit")
-                .IsRequired();
+                .HasColumnType("bit");
 
             base.Map(builder);
         }

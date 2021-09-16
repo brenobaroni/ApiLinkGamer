@@ -9,11 +9,12 @@ using System.Threading.Tasks;
 
 namespace Data.Extensions
 {
-    public class BaseEntityMapping<T> where T : BaseEntity
+    public abstract class EntityTypeConfiguration<T> where T : BaseEntity
     {
         public virtual void Map(EntityTypeBuilder<T> builder)
         {
             builder.HasKey(x => x.Id);
+
             builder
                 .Property(x => x.Id)
                 .ValueGeneratedOnAdd();
@@ -26,13 +27,11 @@ namespace Data.Extensions
 
             builder
                 .Property(x => x.DataAtualizacao)
-                .HasColumnType("datetime")
-                .IsRequired(false);
+                .HasColumnType("datetime");
 
             builder
                 .Property(x => x.DataExclusao)
-                .HasColumnType("datetime")
-                .IsRequired(false);
+                .HasColumnType("datetime");
         }
 
     }

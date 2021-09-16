@@ -1,5 +1,4 @@
-﻿
-using Data.ConnectionFactory;
+﻿using Data.ConnectionFactory;
 using Data.Context;
 using Data.Repository;
 using Data.Repository.Interfaces;
@@ -13,9 +12,9 @@ public class DependencyInjection
 
     public static void AddDependencies(ref IServiceCollection services)
     {
+        AddGenerics(ref  services);
         AddServices(ref services);
         AddRepoitorys(ref services);
-        AddGenerics(ref  services);
     }
 
     #endregion [ Método Externo ]

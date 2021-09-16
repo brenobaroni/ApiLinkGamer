@@ -1,6 +1,12 @@
 using ApiLinkGamer.Configuration;
+using Data.Context;
 using Domain.Entities;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using System.Configuration;
+using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -8,7 +14,43 @@ var builder = WebApplication.CreateBuilder(args);
 var services = builder.Services;
 DependencyInjection.AddDependencies(ref services);
 
-// Add services to the container.
+//JWT
+var key = Encoding.ASCII.GetBytes(Environment.GetEnvironmentVariable("ApiLinkGamerToken"));
+
+//// Replace with your connection string.
+//var connectionString = Environment.GetEnvironmentVariable("ApiLinkGamerConnection2");
+
+//// Replace with your server version and type.
+//// Use 'MariaDbServerVersion' for MariaDB.
+//// Alternatively, use 'ServerVersion.AutoDetect(connectionString)'.
+//// For common usages, see pull request #1233.
+//var serverVersion = new MySqlServerVersion(new Version(8, 0, 23));
+
+//// Replace 'YourDbContext' with the name of your own DbContext derived class.
+//services.AddDbContext<ApiLinkGamerContext>(
+//    dbContextOptions => dbContextOptions
+//        .UseSqlServer()
+//        .EnableSensitiveDataLogging() // <-- These two calls are optional but help
+//        .EnableDetailedErrors()       // <-- with debugging (remove for production).
+//);
+
+services.AddAuthentication(x =>
+{
+    x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+}).AddJwtBearer(x =>
+{
+    x.RequireHttpsMetadata = false;
+    x.SaveToken = true;
+    x.TokenValidationParameters = new TokenValidationParameters
+    {
+        ValidateIssuerSigningKey = true,
+        IssuerSigningKey = new SymmetricSecurityKey(key),
+        ValidateIssuer = false,
+        ValidateAudience = false
+    };
+});
+
 
 builder.Services.AddControllers();
 builder.Services.AddSwaggerGen(c =>
@@ -21,7 +63,7 @@ builder.Services.AddSwaggerGen(c =>
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
-if (builder.Environment.IsDevelopment()) 
+if (builder.Environment.IsDevelopment())
 {
     app.UseDeveloperExceptionPage();
     app.UseSwagger();
@@ -31,9 +73,9 @@ if (builder.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-app.UseAuthentication();
+//app.UseAuthentication();
 
-app.UseAuthorization();
+//app.UseAuthorization();
 
 
 app.MapControllers();
