@@ -11,7 +11,7 @@ namespace Domain.Entities
     {
         public string Email { get; set; } = "";
 
-        public string Password { get; set; } = "";
+        public string? Password { get; set; } = "";
 
         public string Nome { get; set; } = "";
 
@@ -21,10 +21,5 @@ namespace Domain.Entities
 
         public bool Ativo { get; set; }
 
-        User()
-        {
-            if (Email == null)
-                throw new Exception("seta essa porra");
-        }
     }
 }

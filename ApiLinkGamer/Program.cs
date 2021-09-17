@@ -15,24 +15,7 @@ var services = builder.Services;
 DependencyInjection.AddDependencies(ref services);
 
 //JWT
-var key = Encoding.ASCII.GetBytes(Environment.GetEnvironmentVariable("ApiLinkGamerToken"));
-
-//// Replace with your connection string.
-//var connectionString = Environment.GetEnvironmentVariable("ApiLinkGamerConnection2");
-
-//// Replace with your server version and type.
-//// Use 'MariaDbServerVersion' for MariaDB.
-//// Alternatively, use 'ServerVersion.AutoDetect(connectionString)'.
-//// For common usages, see pull request #1233.
-//var serverVersion = new MySqlServerVersion(new Version(8, 0, 23));
-
-//// Replace 'YourDbContext' with the name of your own DbContext derived class.
-//services.AddDbContext<ApiLinkGamerContext>(
-//    dbContextOptions => dbContextOptions
-//        .UseSqlServer()
-//        .EnableSensitiveDataLogging() // <-- These two calls are optional but help
-//        .EnableDetailedErrors()       // <-- with debugging (remove for production).
-//);
+var key = Encoding.ASCII.GetBytes(Environment.GetEnvironmentVariable("ApiLinkGamerToken") ?? "adW#)#0w#)a0t0aw0yraegsgaw04w0T$t40Awt4044");
 
 services.AddAuthentication(x =>
 {

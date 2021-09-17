@@ -15,9 +15,14 @@ namespace Service.Service
     public class UserService : IUserService
     {
         protected IUserRepository _userRepository;
-        public UserService(IUserRepository userRepository)
+        protected ITokenService _tokenService;
+        public UserService(
+            IUserRepository userRepository,
+            ITokenService tokenService
+            )
         {
             _userRepository = userRepository;
+            _tokenService = tokenService;
         }
 
         public async Task<ApiLinkGamerResponse> InsertUser(UserInsertModel userInsertModel)
@@ -49,6 +54,29 @@ namespace Service.Service
             {
 
                 throw;
+            }
+        }
+
+        public async Task<ApiLinkGamerResponse> Login(UserLoginModel userLoginModel)
+        {
+            User? user = null;
+            if (userLoginModel != null && !string.IsNullOrEmpty(userLoginModel.Email) && !string.IsNullOrEmpty(userLoginModel.Password))
+                user = await _userRepository.GetByEmail(userLoginModel.Email, true);
+            else
+                return new ApiLinkGamerResponse(false, "Usuário ou senha inválidos");
+
+            if(user != null && BC.Verify(userLoginModel.Password, user.Password))
+            {
+                user.Password = null;
+                var userToken = _tokenService.GetToken(user);
+                return new ApiLinkGamerResponse(true, "Login efetuado com sucesso.", new {
+                    user = user,
+                    token = userToken
+                });
+            }
+            else
+            {
+                return new ApiLinkGamerResponse(false, "Usuário ou senha inválidos");
             }
         }
     }

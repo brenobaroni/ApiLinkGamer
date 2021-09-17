@@ -21,11 +21,24 @@ public class UserController : ControllerBase
     [HttpPost]
     [Route("Login")]
     [AllowAnonymous]
-    public async Task<IActionResult> Login([FromBody] User user)
+    public async Task<IActionResult> Login([FromBody] UserLoginModel userLoginModel)
     {
-        if (user == null) return BadRequest(new ApiLinkGamerResponse(false, "Usuário ou senha inválidos."));
+        try
+        {
+                if (userLoginModel == null) return BadRequest(new ApiLinkGamerResponse(false, "Usuário ou senha inválidos."));
 
-        return Ok();
+            var response = await _userService.Login(userLoginModel);
+
+            if (response.Success)
+                return Ok(response);
+            else
+                return BadRequest(response);
+
+        }
+        catch (Exception)
+        {
+            return BadRequest(new ApiLinkGamerResponse(false, "Erro ao tentar logar-se. Contate nosso suporte. 'link do suporte.'")); 
+        }
     }
 
     [HttpPost]

@@ -23,7 +23,7 @@ namespace Data.Context
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             //var serverVersion = new MySqlServerVersion(new Version(8, 0, 23));
-            optionsBuilder.UseSqlServer("Data Source=PHWS;Initial Catalog=Linkgamer;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False");
+            optionsBuilder.UseSqlServer(Environment.GetEnvironmentVariable("ApiLinkGamerConnection"));
         }
 
         public ApiLinkGamerContext CreateDbContext(string[] args)

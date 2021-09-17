@@ -10,5 +10,6 @@ namespace Service.Service.Interfaces
     public interface IUserService
     {
         Task<ApiLinkGamerResponse> InsertUser(UserInsertModel userInsertModel);
+        Task<ApiLinkGamerResponse> Login(UserLoginModel userLoginModel);
     }
 }

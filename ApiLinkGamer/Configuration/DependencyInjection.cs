@@ -24,6 +24,7 @@ public class DependencyInjection
     private static void AddServices(ref IServiceCollection services)
     {
         services.AddTransient<IUserService, UserService>();
+        services.AddTransient<ITokenService,  TokenService>();
     }
 
     #endregion [ Repositório Genérico ]

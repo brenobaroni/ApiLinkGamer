@@ -1,9 +1,9 @@
-﻿using MySqlConnector;
+﻿using System.Data;
 
 namespace Data.ConnectionFactory
 {
     public interface IDatabaseFactory
     {
-        MySqlConnection GetDbConnection { get; }
+        IDbConnection Connection();
     }
 }
