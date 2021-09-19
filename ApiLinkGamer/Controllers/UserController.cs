@@ -43,7 +43,6 @@ public class UserController : ControllerBase
 
     [HttpPost]
     [Route("Insert")]
-    [AllowAnonymous]
     public async Task<IActionResult> Insert([FromBody] UserInsertModel userModel)
     {
         if (userModel == null) return BadRequest(new ApiLinkGamerResponse(false, "Erro ao inserir usuário."));
@@ -62,6 +61,36 @@ public class UserController : ControllerBase
                 return Ok(result);
             else
                 return BadRequest(result);
+        }
+        catch (UnauthorizedAccessException)
+        {
+            return Unauthorized("Usuário não tem autorização a esta  requisição.");
+        }
+        catch (Exception)
+        {
+
+            throw;
+        }
+
+    }
+
+    [HttpGet]
+    [Route("GetAll")]
+    [Authorize(Roles = "7")]
+    public async Task<IActionResult> GetAll()
+    {
+
+        try
+        {
+            var result = await _userService.GetAllAsync();
+            if (result.Success)
+                return Ok(result);
+            else
+                return BadRequest(result);
+        }
+        catch (UnauthorizedAccessException)
+        {
+            return Unauthorized("Usuário não tem autorização a esta  requisição.");
         }
         catch (Exception)
         {

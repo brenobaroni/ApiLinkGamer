@@ -28,7 +28,7 @@ namespace Data.Repository
 
                 using(var multi = connection.QueryMultipleAsync(sql, new { Email = email, Ativo = ativo }).Result)
                 {
-                    return (User?)multi.Read<User?>().FirstOrDefault();
+                    return await multi.ReadFirstAsync<User?>();
                 }
             }
         }
@@ -52,5 +52,20 @@ namespace Data.Repository
                 return false;
             }
         }
+
+        public async Task<IEnumerable<User>> GetAllAsync()
+        {
+            using (var connection = _connection.Connection())
+            {
+                var sql = "select * from [Linkgamer].[dbo].[User]";
+
+                using (var multi = connection.QueryMultipleAsync(sql).Result)
+                {
+                    return await multi.ReadAsync<User>();
+                }
+            }
+        }
+
+
     }
 }

@@ -11,5 +11,6 @@ namespace Data.Repository.Interfaces
     {
         Task<User> GetByEmail(string email, bool ativo);
         Task<bool> InsertUser(User user);
+        Task<IEnumerable<User>> GetAllAsync();
     }
 }

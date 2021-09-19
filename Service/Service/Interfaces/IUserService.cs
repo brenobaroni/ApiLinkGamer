@@ -11,5 +11,6 @@ namespace Service.Service.Interfaces
     {
         Task<ApiLinkGamerResponse> InsertUser(UserInsertModel userInsertModel);
         Task<ApiLinkGamerResponse> Login(UserLoginModel userLoginModel);
+        Task<ApiLinkGamerResponse> GetAllAsync();
     }
 }

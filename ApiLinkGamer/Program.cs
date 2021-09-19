@@ -1,10 +1,12 @@
 using ApiLinkGamer.Configuration;
+using ApiLinkGamer.ServiceStart;
 using Data.Context;
 using Domain.Entities;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using Middleware;
 using System.Configuration;
 using System.Text;
 
@@ -14,34 +16,13 @@ var builder = WebApplication.CreateBuilder(args);
 var services = builder.Services;
 DependencyInjection.AddDependencies(ref services);
 
-//JWT
-var key = Encoding.ASCII.GetBytes(Environment.GetEnvironmentVariable("ApiLinkGamerToken") ?? "adW#)#0w#)a0t0aw0yraegsgaw04w0T$t40Awt4044");
-
-services.AddAuthentication(x =>
-{
-    x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-    x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-}).AddJwtBearer(x =>
-{
-    x.RequireHttpsMetadata = false;
-    x.SaveToken = true;
-    x.TokenValidationParameters = new TokenValidationParameters
-    {
-        ValidateIssuerSigningKey = true,
-        IssuerSigningKey = new SymmetricSecurityKey(key),
-        ValidateIssuer = false,
-        ValidateAudience = false
-    };
-});
-
-
+//Service
 builder.Services.AddControllers();
+ApiLinkGamerService.Start(ref services);
 builder.Services.AddSwaggerGen(c =>
 {
     c.SwaggerDoc("v1", new() { Title = "ApiLinkGamer", Version = "v1" });
 });
-
-
 
 var app = builder.Build();
 
@@ -55,12 +36,8 @@ if (builder.Environment.IsDevelopment())
 
 
 app.UseHttpsRedirection();
-
-//app.UseAuthentication();
-
-//app.UseAuthorization();
-
-
+app.UseAuthentication();
+app.UseAuthorization();
+app.UseMiddleware<InterceptorApiLinkGamerMiddleware>();
 app.MapControllers();
-
 app.Run();

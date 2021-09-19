@@ -22,7 +22,8 @@ namespace Service.Service
             {
                 Subject = new ClaimsIdentity(new Claim[]{
 
-                    new Claim(ClaimTypes.Name, user.Email)
+                    new Claim(ClaimTypes.Email, user.Email),
+                    new Claim(ClaimTypes.Role, user.Role.ToString())
                 }),
                 Expires = DateTime.Now.AddHours(4),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)

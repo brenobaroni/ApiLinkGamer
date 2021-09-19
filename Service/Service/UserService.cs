@@ -79,5 +79,18 @@ namespace Service.Service
                 return new ApiLinkGamerResponse(false, "Usuário ou senha inválidos");
             }
         }
+
+        public async Task<ApiLinkGamerResponse> GetAllAsync()
+        {
+            try
+            {
+                var users = await _userRepository.GetAllAsync();
+                return new ApiLinkGamerResponse(true, users);
+            }
+            catch (Exception)
+            {
+                return new ApiLinkGamerResponse(false, "Ops! Ocorreu um erro durante a busca.");
+            }
+        }
     }
 }
