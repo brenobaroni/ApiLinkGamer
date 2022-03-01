@@ -5,48 +5,51 @@ using Data.Repository.Interfaces;
 using Service.Service;
 using Service.Service.Interfaces;
 
-namespace ApiLinkGamer.Configuration;
-public class DependencyInjection
+namespace ApiLinkGamer.Configuration
 {
-    #region [ Método Externo ]
-
-    public static void AddDependencies(ref IServiceCollection services)
+    public class DependencyInjection
     {
-        AddGenerics(ref  services);
-        AddServices(ref services);
-        AddRepoitorys(ref services);
+        #region [ Método Externo ]
+
+        public static void AddDependencies(ref IServiceCollection services)
+        {
+            AddGenerics(ref services);
+            AddServices(ref services);
+            AddRepoitorys(ref services);
+        }
+
+        #endregion [ Método Externo ]
+
+        #region [ Repositório Genérico ]
+
+        private static void AddServices(ref IServiceCollection services)
+        {
+            services.AddTransient<IUserService, UserService>();
+            services.AddTransient<ITokenService, TokenService>();
+        }
+
+        #endregion [ Repositório Genérico ]
+
+        #region [ Repositório Específicos - Core]
+
+        private static void AddRepoitorys(ref IServiceCollection services)
+        {
+            services.AddTransient<IUserRepository, UserRepository>();
+        }
+
+        #endregion [ Repositório Específicos ]
+
+        #region [ Repositório Específicos - Core]
+
+        private static void AddGenerics(ref IServiceCollection services)
+        {
+            services.AddDbContext<ApiLinkGamerContext>();
+            services.AddTransient<IDatabaseFactory, DatabaseFactory>();
+            //services.AddScoped<ITokenServiceCore, TokenServiceCore>();
+            //services.AddScoped(typeof(IUserCore), typeof(UserCore));
+        }
+
+        #endregion [ Repositório Específicos ]
     }
 
-    #endregion [ Método Externo ]
-
-    #region [ Repositório Genérico ]
-
-    private static void AddServices(ref IServiceCollection services)
-    {
-        services.AddTransient<IUserService, UserService>();
-        services.AddTransient<ITokenService,  TokenService>();
-    }
-
-    #endregion [ Repositório Genérico ]
-
-    #region [ Repositório Específicos - Core]
-
-    private static void AddRepoitorys(ref IServiceCollection services)
-    {
-        services.AddTransient<IUserRepository, UserRepository>();
-    }
-
-    #endregion [ Repositório Específicos ]
-
-    #region [ Repositório Específicos - Core]
-
-    private static void AddGenerics(ref IServiceCollection services)
-    {
-        services.AddDbContext<ApiLinkGamerContext>();
-        services.AddTransient<IDatabaseFactory, DatabaseFactory>();
-        //services.AddScoped<ITokenServiceCore, TokenServiceCore>();
-        //services.AddScoped(typeof(IUserCore), typeof(UserCore));
-    }
-
-    #endregion [ Repositório Específicos ]
 }
